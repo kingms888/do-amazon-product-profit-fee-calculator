@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Amazon Profit & Fee Calculator · FBA Revenue & Net Profit Tool</title>
+    <meta name="description" content="Amazon Product Profit & Fee Calculator: estimate FBA revenue, referral fees, and net profit for Amazon sellers. Free tool for high-intent seller queries.">
+    <meta name="keywords" content="amazon fba calculator, etsy seo score, shopify profit calculator, amazon seller fees, etsy keyword density, etsy sellers, amazon sellers, shopify store owners, amazon product profit & fee calculator">
+    <meta name="author" content="Seller Toolkit">
+    <meta property="og:title" content="Amazon Product Profit & Fee Calculator">
+    <meta property="og:description" content="FBA revenue estimation, referral fee breakdown & net profit projection in one tool.">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="index, follow">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f4f7fc;
+            padding: 20px 16px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 780px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0,20,40,0.08);
+            padding: 28px 24px 32px;
+            transition: box-shadow 0.2s;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0a1e2f;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 0.25rem;
+        }
+        .subhead {
+            color: #2c4b66;
+            font-size: 1rem;
+            border-left: 4px solid #ff9900;
+            padding-left: 14px;
+            margin: 8px 0 20px 0;
+            background: #fef7ed;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        .badge {
+            background: #232f3e;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            display: inline-block;
+        }
+        .input-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin: 24px 0 18px;
+        }
+        .field-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 16px;
+        }
+        .field-row label {
+            min-width: 130px;
+            font-weight: 500;
+            color: #1e3a5a;
+            font-size: 0.95rem;
+        }
+        .field-row .input-wrapper {
+            flex: 1;
+            min-width: 160px;
+            display: flex;
+            align-items: center;
+            background: #f0f4fa;
+            border-radius: 60px;
+            padding: 0 18px;
+            border: 1px solid #d9e2ec;
+            transition: 0.15s;
+        }
+        .field-row .input-wrapper:focus-within {
+            border-color: #ff9900;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255,153,0,0.15);
+        }
+        .input-wrapper span.currency {
+            color: #3a5a7a;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 0 14px 4px;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #0a1e2f;
+            outline: none;
+        }
+        .input-wrapper input[type="number"]::-webkit-inner-spin-button {
+            opacity: 0.5;
+        }
+        .hint {
+            font-size: 0.8rem;
+            color: #4d6a88;
+            margin-left: 8px;
+        }
+        .calc-btn {
+            background: #ff9900;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 28px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1e2f3f;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(255,153,0,0.2);
+            width: 100%;
+            max-width: 260px;
+            margin: 6px 0 12px;
+        }
+        .calc-btn:hover {
+            background: #e88e00;
+            transform: scale(0.98);
+            box-shadow: 0 6px 12px rgba(255,153,0,0.25);
+        }
+        .calc-btn:active {
+            background: #d07a00;
+        }
+        .results-panel {
+            background: #f8fafd;
+            border-radius: 24px;
+            padding: 20px 20px 24px;
+            margin: 18px 0 22px;
+            border: 1px solid #e2ecf5;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e3eaf2;
+            font-size: 1rem;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-item .label {
+            color: #1f3f5c;
+            font-weight: 450;
+        }
+        .result-item .value {
+            font-weight: 600;
+            color: #0a1e2f;
+        }
+        .result-item.highlight {
+            background: #eaf3e8;
+            margin: 4px -12px;
+            padding: 12px 16px;
+            border-radius: 40px;
+            border-bottom: none;
+            font-weight: 600;
+        }
+        .result-item.highlight .value {
+            color: #1d6b2e;
+            font-size: 1.2rem;
+        }
+        .fee-breakdown {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-top: 10px;
+            border: 1px dashed #bdd3e8;
+        }
+        .fee-breakdown summary {
+            cursor: pointer;
+            font-weight: 500;
+            color: #1f4a6e;
+            padding: 6px 0;
+        }
+        .fee-breakdown .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #edf2f8;
+        }
+        .fee-breakdown .breakdown-row:last-child {
+            border-bottom: none;
+        }
+        .ad-placeholder {
+            background: #f2f6fc;
+            border-radius: 20px;
+            padding: 14px 18px;
+            margin: 24px 0 14px;
+            border: 1px solid #dce8f2;
+            color: #1f405e;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ad-placeholder .ad-text {
+            font-size: 0.9rem;
+            font-weight: 450;
+        }
+        .ad-placeholder .ad-badge {
+            background: #232f3e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+        }
+        .affiliate-resources {
+            background: #f5f9ff;
+            border-radius: 24px;
+            padding: 18px 20px;
+            margin: 20px 0 16px;
+            border: 1px solid #d8e6f5;
+        }
+        .affiliate-resources h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0a2a44;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .affiliate-resources ul {
+            list-style: none;
+            padding: 0;
+        }
+        .affiliate-resources li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e7eef8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .affiliate-resources li:last-child {
+            border-bottom: none;
+        }
+        .affiliate-resources a {
+            color: #1d5b8e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .affiliate-resources a:hover {
+            text-decoration: underline;
+        }
+        .privacy-note {
+            font-size: 0.75rem;
+            color: #4f6f8b;
+            background: #eef4fa;
+            padding: 12px 18px;
+            border-radius: 60px;
+            margin: 28px 0 8px;
+            text-align: center;
+        }
+        .footer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .small-print {
+            font-size: 0.7rem;
+            color: #5b7a98;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .field-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            .field-row label {
+                min-width: auto;
+            }
+            .calc-btn {
+                max-width: 100%;
+            }
+            .result-item {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>
+            <span>📦 Amazon Profit & Fee Calculator</span>
+            <span class="badge">FBA · Seller</span>
+        </h1>
+        <div class="subhead">
+            ⚡ FBA revenue, referral fee breakdown & net profit — for Amazon sellers
+        </div>
+    </header>
+
+    <main>
+        <!-- Input section -->
+        <div class="input-grid">
+            <div class="field-row">
+                <label for="sellingPrice">💰 Selling price</label>
+                <div class="input-wrapper">
+                    <span class="currency">$</span>
+                    <input type="number" id="sellingPrice" min="0.01" step="0.01" value="29.99" placeholder="0.00">
+                </div>
+            </div>
+            <div class="field-row">
+                <label for="productCost">📦 Product cost</label>
+                <div class="input-wrapper">
+                    <span class="currency">$</span>
+                    <input type="number" id="productCost" min="0" step="0.01" value="8.50" placeholder="0.00">
+                </div>
+            </div>
+            <div class="field-row">
+                <label for="fbaFee">🚚 FBA fulfillment fee</label>
+                <div class="input-wrapper">
+                    <span class="currency">$</span>
+                    <input type="number" id="fbaFee" min="0" step="0.01" value="5.20" placeholder="0.00">
+                </div>
+            </div>
+            <div class="field-row">
+                <label for="otherCosts">📎 Other costs (ads, returns)</label>
+                <div class="input-wrapper">
+                    <span class="currency">$</span>
+                    <input type="number" id="otherCosts" min="0" step="0.01" value="2.00" placeholder="0.00">
+                </div>
+            </div>
+            <div class="field-row" style="margin-top: 4px;">
+                <label for="referralOverride">🔁 Referral fee %</label>
+                <div class="input-wrapper" style="background: #ecf3fa;">
+                    <span style="margin-right: 6px; font-weight: 400;">%</span>
+                    <input type="number" id="referralOverride" min="0" max="50" step="0.1" value="15" placeholder="15%">
+                    <span class="hint">default 15%</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="calc-btn" id="calculateBtn">🧮 Calculate profit</button>
+
+        <!-- Results panel -->
+        <div class="results-panel" id="resultsPanel">
+            <div class="result-item">
+                <span class="label">💰 Gross revenue</span>
+                <span class="value" id="grossRevenue">$29.99</span>
+            </div>
+            <div class="result-item">
+                <span class="label">📉 Referral fee (15%)</span>
+                <span class="value" id="referralFeeDisplay">-$4.50</span>
+            </div>
+            <div class="result-item">
+                <span class="label">🚚 FBA fee</span>
+                <span class="value" id="fbaFeeDisplay">-$5.20</span>
+            </div>
+            <div class="result-item">
+                <span class="label">📦 Product cost</span>
+                <span class="value" id="productCostDisplay">-$8.50</span>
+            </div>
+            <div class="result-item">
+                <span class="label">📎 Other costs</span>
+                <span class="value" id="otherCostsDisplay">-$2.00</span>
+            </div>
+            <div class="result-item highlight">
+                <span class="label">✅ Net profit</span>
+                <span class="value" id="netProfitDisplay">$9.79</span>
+            </div>
+            <details class="fee-breakdown">
+                <summary>📋 Referral fee breakdown</summary>
+                <div class="breakdown-row"><span>Category</span><span>Percentage</span></div>
+                <div class="breakdown-row"><span>Referral fee (standard)</span><span id="referralPercentDisplay">15.0%</span></div>
+                <div class="breakdown-row"><span>Referral fee amount</span><span id="referralAmountDetail">$4.50</span></div>
+                <div class="breakdown-row"><span>Variable closing fee</span><span>$0.00</span></div>
+                <div style="font-size:0.75rem; color:#3b5e7e; margin-top: 6px;">* Based on typical Amazon seller fees. Actual fees may vary by category.</div>
+            </details>
+        </div>
+
+        <!-- Ad placeholder (visible) -->
+        <div class="ad-placeholder">
+            <span class="ad-text">📢 Sponsored: <strong>SellerSprite</strong> — Amazon keyword research & profit tools</span>
+            <span class="ad-badge">AD</span>
+        </div>
+
+        <!-- Affiliate / resource section -->
+        <div class="affiliate-resources">
+            <h3>🔗 Seller resources & affiliates</h3>
+            <ul>
+                <li>📊 <a href="#" target="_blank" rel="noopener">Amazon Seller Fee Calculator (web)</a> — compare FBA vs FBM</li>
+                <li>📈 <a href="#" target="_blank" rel="noopener">Helium 10 · 20% off first month</a> — product research suite</li>
+                <li>📦 <a href="#" target="_blank" rel="noopener">Jungle Scout · free trial</a> — profit & sales estimator</li>
+                <li>🛒 <a href="#" target="_blank" rel="noopener">Shopify profit calculator</a> — for multichannel sellers</li>
+            </ul>
+        </div>
+
+        <!-- Privacy note + event reporting (no hidden tracking) -->
+        <div class="privacy-note">
+            🔒 <strong>Privacy note:</strong> Events may be counted anonymously for product improvement. 
+            No personal data collected. <span style="opacity:0.7;">(reportEvent if configured)</span>
+        </div>
+        <div class="footer-meta">
+            <span class="small-print">Amazon Product Profit & Fee Calculator · v1.0</span>
+            <span class="small-print">📬 seller tool · not affiliated with Amazon</span>
+        </div>
+    </main>
+</div>
+
+<script>
+    (function() {
+        // DOM refs
+        const sellingPriceInput = document.getElementById('sellingPrice');
+        const productCostInput = document.getElementById('productCost');
+        const fbaFeeInput = document.getElementById('fbaFee');
+        const otherCostsInput = document.getElementById('otherCosts');
+        const referralOverrideInput = document.getElementById('referralOverride');
+
+        const grossRevenueEl = document.getElementById('grossRevenue');
+        const referralFeeDisplayEl = document.getElementById('referralFeeDisplay');
+        const fbaFeeDisplayEl = document.getElementById('fbaFeeDisplay');
+        const productCostDisplayEl = document.getElementById('productCostDisplay');
+        const otherCostsDisplayEl = document.getElementById('otherCostsDisplay');
+        const netProfitDisplayEl = document.getElementById('netProfitDisplay');
+        const referralPercentDisplay = document.getElementById('referralPercentDisplay');
+        const referralAmountDetail = document.getElementById('referralAmountDetail');
+
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        // helper format currency
+        function formatCurrency(amount) {
+            return '$' + amount.toFixed(2);
+        }
+
+        // core calculation
+        function calculateProfit() {
+            // parse values (default 0 if invalid)
+            const price = parseFloat(sellingPriceInput.value) || 0;
+            const productCost = parseFloat(productCostInput.value) || 0;
+            const fbaFee = parseFloat(fbaFeeInput.value) || 0;
+            const otherCosts = parseFloat(otherCostsInput.value) || 0;
+            let referralPercent = parseFloat(referralOverrideInput.value);
+            if (isNaN(referralPercent) || referralPercent < 0) referralPercent = 15;
+            if (referralPercent > 50) referralPercent = 50; // sanity
+
+            const referralFee = price * (referralPercent / 100);
+            const totalCosts = productCost + fbaFee + otherCosts + referralFee;
+            const netProfit = price - totalCosts;
+
+            // update UI
+            grossRevenueEl.textContent = formatCurrency(price);
+            referralFeeDisplayEl.textContent = '-' + formatCurrency(referralFee);
+            fbaFeeDisplayEl.textContent = '-' + formatCurrency(fbaFee);
+            productCostDisplayEl.textContent = '-' + formatCurrency(productCost);
+            otherCostsDisplayEl.textContent = '-' + formatCurrency(otherCosts);
+            netProfitDisplayEl.textContent = formatCurrency(netProfit);
+            // net profit sign: if negative, maybe show red? keep simple
+            if (netProfit < 0) {
+                netProfitDisplayEl.style.color = '#b13a3a';
+            } else {
+                netProfitDisplayEl.style.color = '#1d6b2e';
+            }
+
+            // breakdown details
+            referralPercentDisplay.textContent = referralPercent.toFixed(1) + '%';
+            referralAmountDetail.textContent = formatCurrency(referralFee);
+
+            // report event (anonymous)
+            reportEvent('profit_calculated', {
+                sellingPrice: price,
+                referralPercent: referralPercent,
+                netProfit: netProfit
+            });
+        }
+
+        // reportEvent function – only posts if endpoint configured
+        function reportEvent(name, payload) {
+            if (typeof window.ORGANISM_METRICS_ENDPOINT === 'string' && window.ORGANISM_METRICS_ENDPOINT.length > 0) {
+                try {
+                    const body = JSON.stringify({ event: name, payload: payload, timestamp: Date.now() });
+                    // Use sendBeacon if available, else fallback fetch (no blocking)
+                    if (navigator.sendBeacon) {
+                        navigator.sendBeacon(window.ORGANISM_METRICS_ENDPOINT, body);
+                    } else {
+                        fetch(window.ORGANISM_METRICS_ENDPOINT, {
+                            method: 'POST',
+                            body: body,
+                            keepalive: true,
+                            headers: { 'Content-Type': 'application/json' }
+                        }).catch(() => {});
+                    }
+                } catch (e) {
+                    // silently fail – no tracking disruption
+                }
+            }
+        }
+
+        // initial calculation on load
+        calculateProfit();
+
+        // attach event listener to button
+        calculateBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateProfit();
+        });
+
+        // also recalc on pressing Enter in any input (optional)
+        const inputs = [sellingPriceInput, productCostInput, fbaFeeInput, otherCostsInput, referralOverrideInput];
+        inputs.forEach(inp => {
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculateProfit();
+                }
+            });
+            inp.addEventListener('change', function() {
+                // auto recalc on change (blur)
+                calculateProfit();
+            });
+        });
+
+        // expose reportEvent globally (already in scope)
+        window.reportEvent = reportEvent;
+
+        // example: if endpoint is set (for demo, not set)
+        // window.ORGANISM_METRICS_ENDPOINT = 'https://example.com/metrics'; // (uncomment to test)
+    })();
+</script>
+
+<!-- invisible note: no hidden tracking, no credential collection -->
+
+<section data-organism-discovery="hub" style="margin:32px auto 20px;max-width:1040px;padding:16px;border-top:1px solid #d9e2ec;color:#475569;font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <strong style="display:block;color:#0f172a;margin-bottom:6px">More free browser tools</strong>
+  <p style="margin:0 0 8px">This page is part of an autonomous micro-tool network. Explore the live tool directory and related utilities.</p>
+  <p style="margin:0"><a href="https://kingms888.github.io/do-digital-organism-index/" style="color:#0f766e;font-weight:700">Open the tool directory</a> </p>
+</section>
+</body>
+</html>
